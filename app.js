@@ -1,8 +1,17 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+// Importing routes
+mongoose.connect(process.env.DATABASE_URL);
+// variable to hook up to events to run when db is connected to so that I know it's working
+const db = mongoose.connection;
+// on error event
+db.on("error", (error) => console.error(error));
+db.once("open", () => console.log("Connected to MongoDB"));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
